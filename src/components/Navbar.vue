@@ -2,7 +2,7 @@
 header.top-header
   .header-wrapper
     a.header-brand-logo(href="/")
-      v-img( :src="'src/assets/images/my_mint_tool.svg'" )
+      v-img( :src="logo" )
     //- .header-nav  
     //-   ul.top-menu-list
     //-     a(href="#")
@@ -72,6 +72,7 @@ header.top-header
 <script setup>
 import { onMounted } from 'vue';
 import ConnectWallet from '@/components/ConnectWallet.vue'
+import logo from '/src/assets/images/my_mint_tool.svg'
 
 const emit = defineEmits(['walletAddress', 'selectedWallet'])
 

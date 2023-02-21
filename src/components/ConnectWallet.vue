@@ -37,6 +37,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import MartianLogo from '/src/assets/images/logo_martian_wallet.svg'
+import PontemLogo from '/src/assets/images/logo_pontem_wallet.svg'
+import PetraLogo from '/src/assets/images/logo_petra_wallet.svg'
+import RiseLogo from '/src/assets/images/logo_rise_wallet.svg'
 
 const emit = defineEmits(['walletAddress', 'selectedWallet'])
 
@@ -46,22 +50,22 @@ const selectedWallet = ref({})
 const walletList = ref([
   {
     name: 'Martian',
-    logo: 'src/assets/images/logo_martian_wallet.svg',
+    logo: MartianLogo,
     link: 'https://www.martianwallet.xyz/'
   },
   {
     name: 'Pontem',
-    logo: 'src/assets/images/logo_pontem_wallet.svg',
+    logo: PontemLogo,
     link: 'https://pontem.network/'
   },
   {
     name: 'Petra',
-    logo: 'src/assets/images/logo_petra_wallet.svg',
+    logo: PetraLogo,
     link: 'https://petra.app/'
   },
   {
     name: 'Rise',
-    logo: 'src/assets/images/logo_rise_wallet.svg',
+    logo: RiseLogo,
     link: 'https://risewallet.io/'
   }
 ])
@@ -146,7 +150,6 @@ async function disconnectAptosWallet() {
 .connect-wallet-btn{
   height: 48px;
   width: 175px;
-  padding: 0 16px;
   border-radius: 48px;
   background-color: #1b1c20;
 
