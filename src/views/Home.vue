@@ -69,6 +69,7 @@ onMounted(async () => {
 
 async function updateAddress(e){
   walletAddress.value = e
+  await getMintedNFT()
 }
 
 function updateWallet(e) {
