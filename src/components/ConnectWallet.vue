@@ -146,7 +146,7 @@ async function disconnectAptosWallet() {
 .connect-wallet-btn{
   height: 48px;
   width: 175px;
-  padding: 12px 16px;
+  padding: 0 16px;
   border-radius: 48px;
   background-color: #1b1c20;
 
