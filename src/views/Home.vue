@@ -7,7 +7,7 @@ Navbar(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($eve
     h2.mb-2 Add Whitelist (Admin only)
     v-text-field(variant="outlined" label="Aptos Address" v-model="address")
     v-btn.bg-blue-grey-darken-3.text-capitalize(v-if="walletAddress" width="100%"  @click="addToWhitelist" variant="tonal") Add to Whitelist
-    v-btn.bg-blue-grey-darken-3(v-else variant="tonal" disabled width="100%") Wallet Not Connected
+    v-btn.bg-blue-grey-darken-3.text-capitalize(v-else variant="tonal" disabled width="100%") Wallet Not Connected
   
   hr.my-10
   div.mx-auto(style="width: 100%; max-width: 800px")
@@ -21,7 +21,7 @@ Navbar(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($eve
         div.d-flex.flex-row.justify-center.align-center.flex-grow-1(style="gap:12px")
           v-img.flex-grow-0(width="26" height="26" :src="selectedWallet.logo" )
           p.text-capitalize Mint with {{ selectedWallet.name }}
-      v-btn.bg-blue-grey-darken-3(v-else variant="tonal" disabled width="100%") Wallet Not Connected
+      v-btn.bg-blue-grey-darken-3.text-capitalize(v-else variant="tonal" disabled width="100%") Wallet Not Connected
       
   hr.my-10
   div.mx-auto(style="width: 100%; max-width: 800px")
@@ -64,7 +64,6 @@ const network = ref('')
 
 onMounted(async () => {
   await getCollection()
-  await getMintedNFT()
 })
 
 async function updateAddress(e){

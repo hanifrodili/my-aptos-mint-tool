@@ -28,7 +28,7 @@
             v-img.flex-grow-0(width="26" height="26" :src="wallet.logo" )
       v-card-text.d-flex.flex-column(v-else style="gap: 12px")
         code.code-card {{ walletAddress }}
-        v-btn.bg-blue-grey-darken-3( @click="disconnectAptosWallet" variant="tonal") Disconnect
+        v-btn.bg-blue-grey-darken-3.text-capitalize( @click="disconnectAptosWallet" variant="tonal") Disconnect
           
       v-card-actions.justify-end
         v-btn( @click="openSelectWallet = false" variant="plain" )
