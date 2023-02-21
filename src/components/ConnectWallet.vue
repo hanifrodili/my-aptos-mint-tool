@@ -13,9 +13,9 @@
     v-model="openSelectWallet"
     persistent
     transition="dialog-bottom-transition"
-    max-width="400"
+    max-width="300"
     )
-    v-card.bg-blue-grey-darken-4()
+    v-card.bg-blue-grey-darken-4(style="border-radius: 8px")
       v-card-title.text-center
         p(v-if="!walletAddress") Select Wallet
         div.d-flex.flex-row.align-center(v-else)
@@ -23,7 +23,7 @@
           p {{ selectedWallet.name }} Wallet
       v-card-text.d-flex.flex-column(v-if="!walletAddress" style="gap: 12px")
         v-btn.bg-blue-grey-darken-3(v-for="(wallet, index) in walletList" :key="index" variant="tonal" height="50" @click="connectAptosWallet(wallet)" )
-          div.d-flex.flex-row.justify-space-between.align-center.flex-grow-1(style="width:300px")
+          div.d-flex.flex-row.justify-space-between.align-center.flex-grow-1(style="width:200px")
             p.text-capitalize {{ wallet.name }}
             v-img.flex-grow-0(width="26" height="26" :src="wallet.logo" )
       v-card-text.d-flex.flex-column(v-else style="gap: 12px")

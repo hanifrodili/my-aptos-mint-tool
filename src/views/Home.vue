@@ -13,7 +13,7 @@ Navbar(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($eve
   div.mx-auto(style="width: 100%; max-width: 800px")
     h2.mb-2 Mint NFT
     div.d-flex.flex-column.align-center.mx-auto(style="max-width:500px; width:100%")
-      v-img(height="300" width="300" :src="collection.collection_uri" )
+      v-img.rounded.elevation-2.mb-4(height="300" width="300" :src="collection.collection_uri" )
       h3 {{ collection.collection_name }}
       p {{ collection.collection_description }}
       v-text-field.mt-10(style="width:100%"  variant="outlined" label="NFT Amount" v-model="nft_amount")
@@ -27,17 +27,15 @@ Navbar(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($eve
   div.mx-auto(style="width: 100%; max-width: 800px")
     h2.mb-2 My NFT
     div.d-flex.flex-row.flex-wrap(style="gap:20px" v-if="walletAddress")
-      v-card.align-self-start(max-width="250" width="100%"  v-for="(nft, index) in minted_nft" :key="index")
+      v-card.align-self-start.elevation-2(max-width="250" width="100%"  v-for="(nft, index) in minted_nft" :key="index")
         v-img( :src="nft.metadata_uri" height="200" cover)
         v-card-title {{ nft.name }}
         v-card-subtitle {{ nft.collection_name }}
         v-card-actions
-          v-btn( color="blue-grey-darken-4" variant="text") More
-          v-spacer
-          v-btn(
-            :icon="show[index] ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          v-btn.bg-blue-grey-darken-3.text-capitalize.ml-auto(
+            :append-icon="show[index] ? 'mdi-chevron-up' : 'mdi-chevron-down'" variant="tonal"
             @click="show[index] ?  show[index] = false : show[index] = true"
-          )
+          ) More
         v-expand-transition
           div(v-show="show[index]")
             v-divider
@@ -243,5 +241,6 @@ async function mintNft() {
 <style lang="scss" scoped>
 .main-content{
   padding: 30px 60px;
+  padding-top: 80px;
 }
 </style>

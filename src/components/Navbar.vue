@@ -12,7 +12,8 @@ header.top-header
     //-     a(href="#")
     //-       li.top-menu-text Kids
     .header-button
-       ConnectWallet(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($event)")
+      v-btn.elevation-0( @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-weather-sunny' : 'mdi-moon-waning-crescent'" :style="!theme.global.current.value.dark ? 'transform: rotate(-45deg)' : ''") 
+      ConnectWallet(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($event)")
 
   .mobile-nav
     .mobile-nav-panel
@@ -71,10 +72,16 @@ header.top-header
 
 <script setup>
 import { onMounted } from 'vue';
+import { useTheme } from 'vuetify'
 import ConnectWallet from '@/components/ConnectWallet.vue'
 import logo from '/src/assets/images/my_mint_tool.svg'
 
 const emit = defineEmits(['walletAddress', 'selectedWallet'])
+const theme = useTheme()
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 
 function updateAddress(e) {
   emit('walletAddress', e)
@@ -112,8 +119,8 @@ a{
   text-decoration: none;
 }
 .top-header {
-  background: #fff;
-  position: relative;
+  background: #525f66;
+  position: fixed;
   height: 60px;
   width: 100%;
   transition: transform .15s ease;
