@@ -148,7 +148,7 @@ async function disconnectAptosWallet() {
 
 <style lang="scss" scoped>
 .connect-wallet-btn{
-  height: 48px;
+  height: 48px !important;
   width: 175px;
   border-radius: 48px;
   background-color: #1b1c20;
@@ -163,8 +163,11 @@ async function disconnectAptosWallet() {
 .connect-wallet-btn:hover{
   background-color: transparent;
   // border: 1px solid #000;
-  svg *{
-    stroke: #000;
+  svg{
+    path {
+      fill: transparent;
+      stroke: #000;
+    }
   }
   p{
     color: #000;
