@@ -1,0 +1,108 @@
+<template lang="pug">
+.Test
+  v-text-field(label="")
+  v-btn( @click="initCoin" ) Create Coin
+    
+</template>
+
+<script setup>
+import { onMounted, ref, watch } from 'vue'
+
+const props = defineProps(['hasWallet'])
+
+watch(
+  () => props.hasWallet,
+  async (hasWallet) => {
+    if (hasWallet) {
+      await getWallet()
+    } else {
+      selectedWallet.value = {}
+    }
+  }
+)
+
+onMounted(async () => {
+  await getWallet()
+  console.log(hexToBytes("a11ceb0b050000000a01000a020a08031222043408053c1a0756890108df0140069f022a0ac902050cce02360000010101020103010400050000010c08000006000100030804010100030900010100040a000200030b05010100020d05010100010302030403050601060c00010501080005060c0a020a02020103060c05030108010a70726f746f6e5f3335320a6170746f735f636f696e04636f696e0c6d616e616765645f636f696e067369676e65720a50524f544f4e5f4446320b696e69745f6d6f64756c650b64756d6d795f6669656c640a696e697469616c697a650872656769737465720a616464726573735f6f66046d696e74094170746f73436f696e087472616e73666572b14a06f802ee8d5aea328a7883afac7b648bf165dd7bfd26f6e05c282c45a23b00000000000000000000000000000000000000000000000000000000000000010a020504746573740520837a08952cfe6c63e3f12e081d0510f9af010512742b73bd062a749d54eed44b00020107010000000002120a000700070031060838000a0038010a000a0011030600ca9a3b0000000038020b000701060065cd1d0000000038030200").toString().replaceAll(',',' '));
+})
+
+const selectedWallet = ref({})
+
+async function getWallet() {
+  if (localStorage.getItem("SelectedWallet")) {
+    selectedWallet.value = JSON.parse(localStorage.getItem("SelectedWallet"))
+  }
+}
+
+function hexToBytes(hex) {
+  let bytes = [];
+  for (let c = 0; c < hex.length; c += 2)
+    bytes.push(parseInt(hex.substr(c, 2), 16));
+  return bytes;
+}
+
+async function initCoin() {
+
+  // const sender = selectedWallet.value.address
+  // const expiry_time = Math.round(new Date() / 1000) + 180
+  var txn
+
+  var payload = {
+    type: "entry_function_payload",
+    function: `0x1::code::publish_package_txn`,
+    type_arguments: [],
+    arguments: [
+      hexToBytes("0a50524f544f4e5f4446320200000000000000004036393533444137313144343535383446344530333939444337303544463042303831303931453433434143444336464336314542344239443335333834354637e5011f8b08000000000002ff3d8ec16ac3300c86ef7e8ae0fb9ac4491c5f7a288c1ed731762ba5c8965c4213dbd869b731f6ee8bb7b617217de8d7a77d007386131d9883898a75c15fdf76efbb97e3f3567076a59806ef32ae56d5aae6ec124e11908ec18f83f95af3619a2e33e89138637b408c9412a5030bd1cfde6d16f017fed4750b95b4aa12440a3b206884825ea9062c985ecb56695bcb0eb1d71685b492aace08254cdb8168743e8f14c821393364c326cc3e6de3f2f5878fe7c5f25d8cdec0987d25c20c25e48dfffa647ca45b3bf92b95f61ebcc1c7cc8b1ff60b5675d6d015010000010a70726f746f6e5f333532dd021f8b08000000000002ff8d925f4fc23014c5dff7292a0f06129275ffa12091687c14637c5fbaf59634b296b45d341abebbdd06032251eed3d969eed9afb7d7f7c90d59544a49cff32ac5ea0da0ad5656c925639a904ee75112a26f0fb93256d7a5452fafabb7d573fef8e4fc5d7b501b70878c1023d612f4ac37e9d62a93734d2bf850fa9d90ce289590842c1bfde0e4cc6b1b782d9190c2e61dcbd08064a009baed52477b8aa67ee55654d235b07d729322e8467cc1fc08bb18f6eded65daf4f199570c2c183bb8c24ccf3fdd60e0e88c66bdbc9658c35a180bfa8cb7433c49fb27a412d25e0818a36e806efaee5dc1985cf143f61805f850273fda80450c4cde34a03b748f3f275146f1649a842587b44c23887810029e040c2701e653ca71e05498c561914505c36948b378ca921880c571f1c7253a78aba934dc4da05f8b237f8f3246c905da56ecbc9de7fb73b7d2ed46ff004e5ba146dd02000000000300000000000000000000000000000000000000000000000000000000000000010e4170746f734672616d65776f726b00000000000000000000000000000000000000000000000000000000000000010b4170746f735374646c696200000000000000000000000000000000000000000000000000000000000000010a4d6f76655374646c696200"),
+      [
+        hexToBytes("a11ceb0b050000000a01000a020a08031222043408053c1a0756890108df0140069f022a0ac902050cce02360000010101020103010400050000010c08000006000100030804010100030900010100040a000200030b05010100020d05010100010302030403050601060c00010501080005060c0a020a02020103060c05030108010a70726f746f6e5f3335320a6170746f735f636f696e04636f696e0c6d616e616765645f636f696e067369676e65720a50524f544f4e5f4446320b696e69745f6d6f64756c650b64756d6d795f6669656c640a696e697469616c697a650872656769737465720a616464726573735f6f66046d696e74094170746f73436f696e087472616e73666572b14a06f802ee8d5aea328a7883afac7b648bf165dd7bfd26f6e05c282c45a23b00000000000000000000000000000000000000000000000000000000000000010a020504746573740520837a08952cfe6c63e3f12e081d0510f9af010512742b73bd062a749d54eed44b00020107010000000002120a000700070031060838000a0038010a000a0011030600ca9a3b0000000038020b000701060065cd1d0000000038030200")
+      ]
+    ]
+  }
+
+  // if (selectedWallet.value.name === 'Martian') {
+  //   await window.martian.generateSignAndSubmitTransaction(sender, payload, { expiration_timestamp_secs: expiry_time })
+  //     .then(txn => {
+  //       console.log('Txn', txn)
+  //     })
+  //     .catch(e => {
+  //       alert(e.message)
+  //       return
+  //     })
+  // }
+
+  // if (selectedWallet.value.name === 'Pontem') {
+  //   await window.pontem.signAndSubmit(payload, { expiration_timestamp_secs: expiry_time })
+  //     .then(txn => {
+  //       console.log('Txn', txn)
+  //     })
+  //     .catch(e => {
+  //       alert(e.message)
+  //       return
+  //     })
+  // }
+
+  if (selectedWallet.value.name === 'Petra') {
+    await window.petra.signAndSubmitTransaction(payload)
+      .then(txn => {
+        console.log('Txn', txn)
+      })
+      .catch(e => {
+        alert(e.message)
+        return
+      })
+  }
+
+  // if (selectedWallet.value.name === 'Rise') {
+  //   await window.rise.signAndSubmitTransaction(payload, { expiration_timestamp_secs: expiry_time })
+  //     .then(txn => {
+  //       console.log('Txn', txn)
+  //     })
+  //     .catch(e => {
+  //       alert(e.message)
+  //       return
+  //     })
+  // }
+}
+</script>
+
+<style lang="scss" scoped></style>

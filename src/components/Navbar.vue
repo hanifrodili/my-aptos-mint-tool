@@ -2,72 +2,70 @@
 header.top-header
   .header-wrapper
     a.header-brand-logo(href="/")
-      v-img( :src="logo" )
-    //- .header-nav  
-    //-   ul.top-menu-list
-    //-     a(href="#")
-    //-       li.top-menu-text Men
-    //-     a(href="#")
-    //-       li.top-menu-text Women
-    //-     a(href="#")
-    //-       li.top-menu-text Kids
+      img(height="48" :src="logo" )
+    .header-nav  
+      ul.top-menu-list
+        router-link(to="/")
+          li.top-menu-text Home
+        router-link(to="/create")
+          li.top-menu-text Create
     .header-button
-      v-btn.elevation-0( @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-weather-sunny' : 'mdi-moon-waning-crescent'" :style="!theme.global.current.value.dark ? 'transform: rotate(-45deg)' : ''") 
-      ConnectWallet(@walletAddress="updateAddress($event)" @selectedWallet="updateWallet($event)")
+      v-btn.elevation-0( @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'" :style="!theme.global.current.value.dark ? 'transform: rotate(-360deg)' : ''") 
+      ConnectWallet(@walletConnected="updateWallet($event)")
 
-  .mobile-nav
-    .mobile-nav-panel
-      v-btn.pa-2.button-icon.close-nav-btn(icon @click="closeNav()")
-        svg(aria-hidden="true" class="pre-close-icon" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none")
-          path(stroke="#111" stroke-width="1.5" d="M18.973 5.027L5.028 18.972M5.027 5.027l13.945 13.945")
-      .main-menu
-        ul.mobile-menu-list
-          li.mobile-menu-text(@click="openSubmenu('men')")
-            |Men
-            svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
-              path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
+  //- .mobile-nav
+  //-   .mobile-nav-panel
+  //-     v-btn.pa-2.button-icon.close-nav-btn(icon @click="closeNav()")
+  //-       svg(aria-hidden="true" class="pre-close-icon" focusable="false" viewBox="0 0 24 24" role="img" width="24px" height="24px" fill="none")
+  //-         path(stroke="#111" stroke-width="1.5" d="M18.973 5.027L5.028 18.972M5.027 5.027l13.945 13.945")
+  //-     .main-menu
+  //-       ul.mobile-menu-list
+  //-         li.mobile-menu-text(@click="openSubmenu('men')")
+  //-           |Men
+  //-           svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
+  //-             path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
 
-          li.mobile-menu-text(@click="openSubmenu('women')")
-            |Women
-            svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
-              path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
+  //-         li.mobile-menu-text(@click="openSubmenu('women')")
+  //-           |Women
+  //-           svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
+  //-             path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
 
-          li.mobile-menu-text(@click="openSubmenu('kids')")
-            |Kids
-            svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
-              path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
+  //-         li.mobile-menu-text(@click="openSubmenu('kids')")
+  //-           |Kids
+  //-           svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg")
+  //-             path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
 
-      .second-menu
-        v-btn.pa-2.button-icon.back-nav-btn(icon @click="backMainMenu()")
-          svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotateZ(180deg)")
-            path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
-          .pl-4(style="font-size:16px; color: #111") Back
-        ul.mobile-submenu-list(id="men")
-          li.mb-4.submenu-title Men
-          li.mobile-submenu-text(href="#" )
-            |New & Feature
-          li.mobile-submenu-text(href="#" )
-            |Shoes
-          li.mobile-submenu-text(href="#" )
-            |Clothing
+  //-     .second-menu
+  //-       v-btn.pa-2.button-icon.back-nav-btn(icon @click="backMainMenu()")
+  //-         svg(width="8" height="15" viewBox="0 0 28 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotateZ(180deg)")
+  //-           path(d="M1 49L26 25.0017L1 1" stroke="#111" stroke-width="5")
+  //-         .pl-4(style="font-size:16px; color: #111") Back
+  //-       ul.mobile-submenu-list(id="men")
+  //-         li.mb-4.submenu-title Men
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |New & Feature
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Shoes
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Clothing
 
-        ul.mobile-submenu-list(id="women")
-          li.mb-4.submenu-title Women
-          li.mobile-submenu-text(href="#" )
-            |New & Feature
-          li.mobile-submenu-text(href="#" )
-            |Shoes
-          li.mobile-submenu-text(href="#" )
-            |Clothing
+  //-       ul.mobile-submenu-list(id="women")
+  //-         li.mb-4.submenu-title Women
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |New & Feature
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Shoes
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Clothing
 
-        ul.mobile-submenu-list(id="kids")
-          li.mb-4.submenu-title Kids
-          li.mobile-submenu-text(href="#" )
-            |New & Feature
-          li.mobile-submenu-text(href="#" )
-            |Shoes
-          li.mobile-submenu-text(href="#" )
-            |Clothing
+  //-       ul.mobile-submenu-list(id="kids")
+  //-         li.mb-4.submenu-title Kids
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |New & Feature
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Shoes
+  //-         li.mobile-submenu-text(href="#" )
+  //-           |Clothing
 </template>
 
 <script setup>
@@ -76,19 +74,15 @@ import { useTheme } from 'vuetify'
 import ConnectWallet from '@/components/ConnectWallet.vue'
 import logo from '/src/assets/images/my_mint_tool.svg'
 
-const emit = defineEmits(['walletAddress', 'selectedWallet'])
+const emit = defineEmits(['hasWallet'])
 const theme = useTheme()
 
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 
-function updateAddress(e) {
-  emit('walletAddress', e)
-}
-
 function updateWallet(e) {
-  emit('selectedWallet', e)
+  emit('hasWallet', e)
 }
 
 function openNav() {
@@ -138,9 +132,10 @@ a{
 }
 
 .header-brand-logo {
-  width: 60px;
+  width: 235px;
+  padding: 6px;
   display: flex;
-  place-content: center;
+  align-content: center;
 }
 
 .header-nav {
@@ -157,14 +152,14 @@ a{
   }
 
   .top-menu-text {
-    color: #111;
+    color: #fff;
     padding: 16px 12px 18px 12px;
     border-bottom: 2px solid transparent;
     cursor: pointer;
   }
 
   .top-menu-text:hover {
-    border-bottom: 2px solid #111;
+    border-bottom: 2px solid currentColor;
   }
 }
 

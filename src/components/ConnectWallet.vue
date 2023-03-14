@@ -2,32 +2,32 @@
 .ConnectWallet
   v-btn.connect-wallet-btn.elevation-0( @click="toggleSelectWallet()" )
     div.d-flex.flex-row.justify-space-between.align-center.flex-grow-1(style="width:130px")
-      v-img.flex-grow-0.mr-2.rounded-circle(width="26" height="26" :src="selectedWallet.logo" style="border:1px solid white" v-if="walletAddress" )
+      v-img.flex-grow-0.mr-2.rounded-circle(width="26" height="26" :src="selectedWallet.logo" style="border:1px solid white" v-if="selectedWallet.address" )
       svg(v-else width='22' height='22' viewbox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg')
         path(d='M3.4375 5.5V16.5C3.4375 16.8647 3.58237 17.2144 3.84023 17.4723C4.09809 17.7302 4.44783 17.875 4.8125 17.875H18.5625C18.7448 17.875 18.9197 17.8026 19.0486 17.6736C19.1776 17.5447 19.25 17.3698 19.25 17.1875V7.5625C19.25 7.38017 19.1776 7.20529 19.0486 7.07636C18.9197 6.94743 18.7448 6.875 18.5625 6.875H4.8125C4.44783 6.875 4.09809 6.73013 3.84023 6.47227C3.58237 6.21441 3.4375 5.86467 3.4375 5.5ZM3.4375 5.5C3.4375 5.13533 3.58237 4.78559 3.84023 4.52773C4.09809 4.26987 4.44783 4.125 4.8125 4.125H16.5' stroke='white' stroke-width='1.375' stroke-linecap='round' stroke-linejoin='round')
         path(d='M15.4688 13.4063C16.0383 13.4063 16.5 12.9445 16.5 12.375C16.5 11.8055 16.0383 11.3438 15.4688 11.3438C14.8992 11.3438 14.4375 11.8055 14.4375 12.375C14.4375 12.9445 14.8992 13.4063 15.4688 13.4063Z' fill='white')
         
-      p(v-if="!walletAddress") Connect Wallet
-      p.d-inline-block.text-truncate(v-else) {{ walletAddress }}
+      p(v-if="!selectedWallet.address") Connect Wallet
+      p.d-inline-block.text-truncate(v-else) {{ selectedWallet.address }}
   v-dialog(
     v-model="openSelectWallet"
     persistent
     transition="dialog-bottom-transition"
-    max-width="300"
+    max-width="400"
     )
     v-card.bg-blue-grey-darken-4(style="border-radius: 8px")
       v-card-title.text-center
-        p(v-if="!walletAddress") Select Wallet
+        p(v-if="!selectedWallet.address") Select Wallet
         div.d-flex.flex-row.align-center(v-else)
           v-img.flex-grow-0.mr-4(height="40" width="40" :src="selectedWallet.logo" )
           p {{ selectedWallet.name }} Wallet
-      v-card-text.d-flex.flex-column(v-if="!walletAddress" style="gap: 12px")
-        v-btn.bg-blue-grey-darken-3(v-for="(wallet, index) in walletList" :key="index" variant="tonal" height="50" @click="connectAptosWallet(wallet)" )
-          div.d-flex.flex-row.justify-space-between.align-center.flex-grow-1(style="width:200px")
+      v-card-text.d-flex.flex-column(v-if="!selectedWallet.address" style="gap: 12px")
+        v-btn.bg-blue-grey-darken-3.mx-auto(v-for="(wallet, index) in walletList" :key="index" variant="tonal" height="50" width="300" @click="connectAptosWallet(wallet)" )
+          div.d-flex.flex-row.justify-space-between.align-center.flex-grow-1(style="width:250px")
             p.text-capitalize {{ wallet.name }}
             v-img.flex-grow-0(width="26" height="26" :src="wallet.logo" )
       v-card-text.d-flex.flex-column(v-else style="gap: 12px")
-        code.code-card {{ walletAddress }}
+        code.code-card {{ selectedWallet.address }}
         v-btn.bg-blue-grey-darken-3.text-capitalize( @click="disconnectAptosWallet" variant="tonal") Disconnect
           
       v-card-actions.justify-end
@@ -42,10 +42,9 @@ import PontemLogo from '/src/assets/images/logo_pontem_wallet.svg'
 import PetraLogo from '/src/assets/images/logo_petra_wallet.svg'
 import RiseLogo from '/src/assets/images/logo_rise_wallet.svg'
 
-const emit = defineEmits(['walletAddress', 'selectedWallet'])
+const emit = defineEmits(['walletConnected'])
 
 const openSelectWallet = ref(false)
-const walletAddress = ref('')
 const selectedWallet = ref({})
 const walletList = ref([
   {
@@ -71,17 +70,11 @@ const walletList = ref([
 ])
 
 onMounted(() => {
-  if (localStorage.getItem("AptosWalletAddress")){
-    walletAddress.value = localStorage.getItem("AptosWalletAddress")
-    emit('walletAddress', walletAddress.value)
-  }
-
   if (localStorage.getItem("SelectedWallet")) {
     selectedWallet.value = JSON.parse(localStorage.getItem("SelectedWallet"))
-    emit('selectedWallet', selectedWallet.value)
   }
 
-  if (walletAddress.value && selectedWallet.value) {
+  if (selectedWallet.value.address) {
     connectAptosWallet(selectedWallet.value)
   }
 })
@@ -114,15 +107,16 @@ async function connectAptosWallet(wallet) {
     return
   }
 
-
-  if (!await provider.isConnected()) {
+  if (!await provider.isConnected() || JSON.parse(localStorage.getItem("SelectedWallet")).address !== '') {
+    console.log(`Connecting to ${wallet.name} Wallet`);
     const account = await provider.connect()
-    walletAddress.value = account.address
-    localStorage.setItem("AptosWalletAddress", account.address);
+    selectedWallet.value = JSON.parse(localStorage.getItem("SelectedWallet"))
+    selectedWallet.value['address'] = account.address
+    localStorage.setItem("SelectedWallet", JSON.stringify(selectedWallet.value));
     openSelectWallet.value = false
-    emit('walletAddress', walletAddress.value)
-    emit('selectedWallet', selectedWallet.value)
   }
+
+  emit('walletConnected', true)
 }
 
 async function disconnectAptosWallet() {
@@ -138,10 +132,11 @@ async function disconnectAptosWallet() {
   if (selectedWallet.value.name === 'Rise')
     await window.rise.disconnect()
 
-  localStorage.removeItem("AptosWalletAddress");
   localStorage.removeItem("SelectedWallet");
   openSelectWallet.value = false
-  window.location.reload()
+  selectedWallet.value = {}
+  emit('walletConnected', false)
+  // window.location.reload()
 }
 
 </script>
